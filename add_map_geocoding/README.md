@@ -1,4 +1,8 @@
 
+## 有償・無償のgeocoding apiまとめ
+https://developer.ntt.com/ja/blog/b3dacc84-ee1e-43d4-85d5-6611e8449da7
+
+
 
 ## Google map
 google map の利用方法と地図APIについて:
@@ -30,7 +34,6 @@ https://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/geocoder.html
 上限回数は通常、1アプリケーションIDごとに1日50000回です。ただし、Web APIによってはこれよりも少なく設定されていることがあります。この回数はWeb APIごとではなく、アプリケーションIDごとに計測される総リクエスト回数を基準にします。
 
 
-
 ## mapfan
 URL:
 http://business.mapfan.com/purpose/geocording.php
@@ -40,6 +43,13 @@ http://business.mapfan.com/purpose/geocording.php
 法人向けにMapFan APIを月間上限5000PVの範囲内で利用可能らしい
 http://business.mapfan.com/api_free_plan/
 
-## 
+## openstreetmap関連のapi
+openstreetmapは無償で使えるが、基本的に提供されているUIも精度もあまりよくない
 
+### leaflet
+精度が悪い。。
+https://github.com/Esri/esri-leaflet-geocoder/
 
+### Nominatim
+地図UIが好みにあっているのであれば、いいかも。
+https://nominatim.openstreetmap.org/search.php?q=%E6%96%B0%E5%AE%BF%E3%83%9F%E3%83%A9%E3%82%A4%E3%83%8A%E3%82%BF%E3%83%AF%E3%83%BC&polygon_geojson=1&viewbox=
