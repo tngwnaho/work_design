@@ -1,53 +1,75 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset=utf-8 />
-    <title>Esri Leaflet Geocoder</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-
-    <!-- Load Leaflet from CDN-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet-src.js"></script>
-
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet"></script>
-
-    <!-- Esri Leaflet Geocoder -->
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css">
-    <script src="https://unpkg.com/esri-leaflet-geocoder"></script>
-
-    <!-- Make the map fill the entire page -->
-    <style>
-    #map {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ 
+    <style type="text/css">
+      html { height: 90% }
+      body { height: 95%; margin: 0; padding: 0 }
+      #map_canvas { height: 90% }
     </style>
-</head>
-
-<body>
-    <div id="map"></div>
-    <script>
-    var map = L.map('map').setView([45.5165, -122.6764], 12);
-    var tiles = L.esri.basemapLayer("Streets").addTo(map);
-
-    // create the geocoding control and add it to the map
-    var searchControl = L.esri.Geocoding.geosearch().addTo(map);
-
-    // create an empty layer group to store the results and add it to the map
-    var results = L.layerGroup().addTo(map);
-
-    // listen for the results event and add every result to the map
-    searchControl.on("results", function(data) {
-        results.clearLayers();
-        for (var i = data.results.length - 1; i >= 0; i--) {
-            results.addLayer(L.marker(data.results[i].latlng));
-        }
-    });
+  
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHpAxqNeydRWX6tAXoAHTBewu9sZ8a_Yw&callback=initMap">
     </script>
-</body>
+ 
+  
+  </head>
+    
+  <!-- ページが読み込まれたらinitialize()関数を実行 -->
+  <body onload="initialize()">
+    <!-- 地図を表示させる要素。widthとheightを必ず指定する。 -->
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+    <input type="text" value="東京タワー" size="20" id="place">
+    <button type="button" onclick="search()">検索</button><br />
+    緯度：<span id="ido">35.6585805</span><br />
+    経度：<span id="keido">139.74543289999997</span>
+   <!-- initialize()関数を定義 -->
+   <script type="text/javascript">
+    
+    var map;
+    function initialize() {
+      // 地図を表示する際のオプションを設定
+      var mapOptions = {
+        center: new google.maps.LatLng(35.6585805, 139.74543289999997),
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+ 
+      // Mapオブジェクトに地図表示要素情報とオプション情報を渡し、インスタンス生成
+      map = new google.maps.Map(document.getElementById("map_canvas"),
+          mapOptions);
+    }
+     
+    function search(){
+       var place = document.getElementById('place').value;
+       var geocoder = new google.maps.Geocoder();
+       // ジオコーディング　検索実行
+       geocoder.geocode({"address" : place}, function(results, status) {
+       if (status == google.maps.GeocoderStatus.OK) {
+             
+            var lat = results[0].geometry.location.lat();//緯度を取得
+            var lng = results[0].geometry.location.lng();//経度を取得
+            var ido = document.getElementById('ido')
+            ido.innerHTML = lat;
+            var keido = document.getElementById('keido')
+            keido.innerHTML = lng;
+            var mark = {
+                lat: lat, // 緯度
+                lng: lng // 経度
+            };
+            marker = new google.maps.Marker({ // マーカーの追加
+            position: mark, // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
+            });
+             
+            map.setCenter(results[0].geometry.location); // 地図の中心を移動
+            cnt =0;
+       }
+       });
+       //}
+    }
+     
+  </script> 
+  </body>
 </html>
